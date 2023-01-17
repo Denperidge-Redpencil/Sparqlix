@@ -1,11 +1,11 @@
 {
-  "name": "matrix-bot-starter-starter",
+  "name": "sparqlix",
   "version": "1.0.0",
-  "description": "A template to get started with matrix-bot-starter!",
+  "description": "A matrix bot to run Sparql queries sent through the chat!",
   "main": "app/index.ts",
   "dependencies": {
     "matrix-bot-sdk": "^0.6.3",
-    "matrix-bot-starter": "^1.0.3",
+    "matrix-bot-starter": "file:../Mermatrix-Rework/Matrix-Bot-Starter/matrix-bot-starter-1.0.2.tgz",
     "dotenv": "^16.0.3",
     "sharp": "^0.31.3",
     "headless-mermaid": "^1.3.0"
@@ -24,5 +24,5 @@
     "build-docker": "cp -n .env .env.docker && docker build -t mermatrix ."
   },
   "author": "Denperidge",
-  "license": "Unlicense"
+  "license": "MIT"
 }

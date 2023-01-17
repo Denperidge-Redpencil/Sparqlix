@@ -1,13 +1,11 @@
-# Mermatrix
+# Sparqlix
 
 
 <span>
-<img src="assets/matrix-bot-starter-starter.png" align="left" style="width:100px;height: 100px; margin: 20px;">
+<img src="assets/sparqlix.png" align="left" style="width:100px;height: 100px; margin: 20px;">
 <br>
 
-A template to get started with matrix-bot-starter!
-
-This template is just a starting off point. For documentation of the matrix-bot-starter, please check out its [repository](https://github.com/Denperidge-Redpencil/Matrix-Bot-Starter).
+A matrix bot to run Sparql queries sent through the chat!
 
 </span>
 
@@ -38,5 +36,4 @@ This template is just a starting off point. For documentation of the matrix-bot-
 - *.env.docker* Manually made or generated from *.env*. Environment variables for use in Docker.
 
 ## License
-This template is in the [public domain](LICENSE). Matrix-Bot-Starter is licensed under the [MIT License](https://github.com/Denperidge-Redpencil/Matrix-Bot-Starter/blob/main/LICENSE).
-
+This project is licensed under the [MIT License](https://github.com/Denperidge-Redpencil/Matrix-Bot-Starter/blob/main/LICENSE).
