@@ -2,7 +2,7 @@
 import { MatrixClient } from 'matrix-bot-sdk';
 import { newClient, multiMessageCommandSetup, onMessage, changeAvatar, changeDisplayname } from 'matrix-bot-starter';
 
-import { handleMermaidCodeblocks } from './mermaid';
+import { handleSparqlCodeblocks } from './sparql';
 
 async function onEvents(client : MatrixClient) {
     onMessage(client, 
@@ -34,7 +34,7 @@ async function onEvents(client : MatrixClient) {
             }
         }
 
-        handleMermaidCodeblocks(client, roomId, requestEventId, event, body, isEdit);
+        handleSparqlCodeblocks(client, roomId, requestEventId, event, body, isEdit);
 
     });
 
