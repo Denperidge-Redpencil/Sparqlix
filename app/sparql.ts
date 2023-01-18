@@ -27,7 +27,18 @@ function streamDataToTdString(streamData: any, headers : Set<string>) {
 }
 
 export async function runAndReturnSparql(client: MatrixClient, roomId: string, event: any, endpointUrl: string, query: string) {
-    client.replyNotice(roomId, event, 'Running SPARQL Query...');
+    const threadStartEventId = event['content']['m.relates_to'] ? event['content']['m.relates_to']['event_id'] : event['event_id'];
+
+    client.sendMessage(roomId, {
+        body: 'Running SPARQL Query...',
+        format: 'org.matrix.custom.html',
+        formatted_body: '<b>Running SPARQL Query...</b>',
+        msgtype: 'm.text',
+        'm.relates_to': {
+            'rel_type': 'm.thread',
+            'event_id': threadStartEventId
+        }
+    });
 
     try { 
         const sparqlClient = new SparqlClient({endpointUrl});
@@ -69,7 +80,16 @@ export async function runAndReturnSparql(client: MatrixClient, roomId: string, e
             data += `</table>`;
 
             try {
-                client.replyHtmlText(roomId, event, data);
+                client.sendMessage(roomId, {
+                    body: data.replace(/<.*?>/gi, ''),
+                    format: 'org.matrix.custom.html',
+                    formatted_body: data,
+                    msgtype: 'm.text',
+                    'm.relates_to': {
+                        'rel_type': 'm.thread',
+                        'event_id': threadStartEventId
+                    }
+                });
             } catch (err) {
                 logError(err, client, roomId)
             }

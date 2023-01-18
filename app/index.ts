@@ -48,7 +48,7 @@ async function onEvents(client : MatrixClient) {
                                 functionToExecute: awaitSparqlQuery,
                                 data: {url}
                             },
-                            `Running a SPARQL query on ${url}! Send it in your next message.`)
+                            `Running a SPARQL query on ${url}! Send it in your next message.`, true)
                     }
                     
                 }
