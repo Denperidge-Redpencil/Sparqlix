@@ -1,4 +1,4 @@
-import { MatrixClient } from "matrix-bot-sdk";
+import { MatrixClient, MatrixError } from "matrix-bot-sdk";
 import { AwaitMoreInputOptions, logError } from "matrix-bot-starter";
 import { default as SparqlClient } from 'sparql-http-client';
 
@@ -46,6 +46,8 @@ export async function runAndReturnSparql(client: MatrixClient, roomId: string, e
     try { 
         const sparqlClient = new SparqlClient({endpointUrl});
         const stream = await sparqlClient.query.select(query);
+        //let intervalBetweenStreamMessage = 0;
+        let timeout : NodeJS.Timeout;
 
         stream.on('error', (err) => {
             logError(err, client, roomId);
@@ -83,7 +85,7 @@ export async function runAndReturnSparql(client: MatrixClient, roomId: string, e
             data += `</table>`;
 
             try {
-                client.sendMessage(roomId, {
+                const content: any = {
                     body: data.replace(/<.*?>/gi, ''),
                     format: 'org.matrix.custom.html',
                     formatted_body: data,
@@ -92,7 +94,33 @@ export async function runAndReturnSparql(client: MatrixClient, roomId: string, e
                         'rel_type': 'm.thread',
                         'event_id': threadStartEventId
                     }
-                });
+                };
+
+                function catcher(err: MatrixError) {
+                    if (err.errcode == 'M_LIMIT_EXCEEDED' && err.retryAfterMs) {
+                        stream.destroy();
+
+                        // Make sure to wait as long as the last error says
+                        clearTimeout(timeout);
+
+                        timeout = setTimeout(() => {
+                            client.replyNotice(roomId, event, 'Rate limit reached. Try limiting the sparql query!')
+                            //logError(err, client, roomId);
+                            //client.sendMessage(roomId, content).catch(catcher);
+                            //stream.resume();
+                        }, err.retryAfterMs + 100);
+                    };
+                }
+
+                client.sendMessage(roomId, content).catch(catcher);
+
+                /*
+                setTimeout(() => {
+                    client.sendMessage(roomId, content).catch(catcher);
+                    intervalBetweenStreamMessage += 3000;
+                }, intervalBetweenStreamMessage);
+                */
+                    
             } catch (err) {
                 logError(err, client, roomId)
             }
