@@ -6,7 +6,7 @@
   "dependencies": {
     "dotenv": "^16.0.3",
     "matrix-bot-sdk": "^0.6.3",
-    "matrix-bot-starter": "file:../Matrix-Bot-Starter/matrix-bot-starter-1.3.0.tgz",
+    "matrix-bot-starter": "^1.4.0",
     "sharp": "^0.31.3",
     "sparql-http-client": "^2.4.2"
   },
