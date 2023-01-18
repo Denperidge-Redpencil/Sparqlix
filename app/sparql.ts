@@ -1,6 +1,6 @@
 import { MatrixClient } from "matrix-bot-sdk";
 import { logError } from "matrix-bot-starter";
-import StreamClient, { default as SparqlClient } from 'sparql-http-client';
+import { default as SparqlClient } from 'sparql-http-client';
 
 function streamDataToTdString(streamData: any, headers : Set<string>) {
     if (typeof(streamData) == 'object') {
@@ -33,34 +33,22 @@ export async function handleSparqlCodeblocks(client: MatrixClient, roomId : stri
     const endpointUrl : string = body.substring(0, firstNewLine).trim();
     const query : string = body.substring(firstNewLine).trim();
 
-
-    console.log('-----')
-    console.log(endpointUrl)
-    console.log('---')
-    console.log(query)
-    console.log('-----')
+    client.replyNotice(roomId, event, 'Running SPARQL Query...');
 
     try { 
-
-    
         const sparqlClient = new SparqlClient({endpointUrl});
         const stream = await sparqlClient.query.select(query);
 
         stream.on('error', (err) => {
-            logError(err);
-            //client.replyHtmlText
+            logError(err, client, roomId);
         });
     
         stream.on('readable', function(this: any) {
-            console.log(Object.prototype.toString.call(this))
-
             let data : string = '';
             let headers : Set<string> = new Set();
             let streamData : Array<Array<any>>;
 
             while ((streamData = this.read()) !== null) {
-                console.log(streamData);
-
                 // Setup table headers
                 Object.entries(streamData).forEach((value: Array<any>) => {
                     headers.add(value[0]);
@@ -86,12 +74,11 @@ export async function handleSparqlCodeblocks(client: MatrixClient, roomId : stri
             
             data = `<table><tr>${headersHtml}</tr>${data}`;
             data += `</table>`;
-            console.log('data: ' + data)
+
             client.replyHtmlText(roomId, event, data);
-            
         });
     } catch (err) {
-        logError(err);
+        logError(err, client, roomId);
     }
     
 }
