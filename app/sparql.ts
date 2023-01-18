@@ -29,6 +29,9 @@ function streamDataToTdString(streamData: any, headers : Set<string>) {
 export async function runAndReturnSparql(client: MatrixClient, roomId: string, event: any, endpointUrl: string, query: string) {
     const threadStartEventId = event['content']['m.relates_to'] ? event['content']['m.relates_to']['event_id'] : event['event_id'];
 
+    // Replace codeblock backticks
+    query = query.replace(/```.*/gmi, '');
+
     client.sendMessage(roomId, {
         body: 'Running SPARQL Query...',
         format: 'org.matrix.custom.html',
