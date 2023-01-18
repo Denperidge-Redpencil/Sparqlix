@@ -11,6 +11,12 @@ A matrix bot to run Sparql queries sent through the chat!
 
 <br clear="both">
 
+![Screenshot of Sparqlix in action](assets/screenshot.png)
+
+## Usage (in Matrix)
+- Simply type `@bot sparql URL`. Afterwards it will ask for the SPARQL code, and that's it!
+- `@bot name` & `@bot avatar` allow changing the name and avatar respectively.
+
 ## Usage
 - Clone the repository.
 - Either enter LOGINNAME & PASSWORD in .env, or generate an access token for your bot user (see [t2bot.io/docs/access_tokens/](https://t2bot.io/docs/access_tokens/)).
@@ -30,6 +36,7 @@ A matrix bot to run Sparql queries sent through the chat!
 ## Structure
 - [app/](app/)
     - [index.ts](app/index.ts): basic boilerplate for the bot client.
+    - [sparql.ts](app/sparql.ts): code to run sparql commands
 - [assets/](assets/): Images (and an image script) for use in the README.
 - *build/*: Made during runtime. Compiled javascript code.
 - *.env*: Manually made. Environment variables to use when running locally.
